@@ -1,12 +1,11 @@
-  
-import React from 'react'
+import React from "react";
 
 const UserTable = props => (
   <table>
     <thead>
       <tr>
         <th>Name</th>
-        <th>Username</th>
+        <th>Position</th>
         <th>Actions</th>
       </tr>
     </thead>
@@ -15,11 +14,11 @@ const UserTable = props => (
         props.users.map(user => (
           <tr key={user.id}>
             <td>{user.name}</td>
-            <td>{user.username}</td>
+            <td>{user.position}</td>
             <td>
               <button
                 onClick={() => {
-                  props.editRow(user)
+                  props.editRow(user);
                 }}
                 className="button muted-button"
               >
@@ -41,7 +40,6 @@ const UserTable = props => (
       )}
     </tbody>
   </table>
-)
-
+);
 
 export default UserTable;
