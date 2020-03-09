@@ -1,38 +1,76 @@
-import React, { useState } from "react";
-import UserTable from "./tables/UserTable";
-import AddUserForm from "./forms/AddUserForm";
+import React, { useState, Fragment } from 'react'
+import AddUserForm from './forms/AddUserForm'
+import EditUserForm from './forms/EditUserForm'
+import UserTable from './tables/UserTable'
 
 const App = () => {
-  const usersData = [
-    { id: 1, name: "Tania", username: "floppydiskette" },
-    { id: 2, name: "Craig", username: "siliconeidolon" },
-    { id: 3, name: "Ben", username: "benisphere" }
-  ];
+	// Data
+	const usersData = [
+		{ id: 1, name: 'Tania', username: 'floppydiskette' },
+		{ id: 2, name: 'Craig', username: 'siliconeidolon' },
+		{ id: 3, name: 'Ben', username: 'benisphere' },
+	]
 
-  const [users, setUsers] = useState(usersData);
+	const initialFormState = { id: null, name: '', username: '' }
 
-  const addUser = user => {
-    user.id = users.length + 1;
-    setUsers([...users, user]);
-    // setUsers(users.concat(user))   append;
-    // setUsers([user].concat(users)) prepend;
-  };
+	// Setting state
+	const [ users, setUsers ] = useState(usersData)
+	const [ currentUser, setCurrentUser ] = useState(initialFormState)
+	const [ editing, setEditing ] = useState(false)
 
-  return (
-    <div className="container">
-      <h1>Team Roster App </h1>
-      <div className="flex-row">
-        <div className="flex-large">
-          <h2>Add user</h2>
-          <AddUserForm addUser={addUser} />
-        </div>
-        <div className="flex-large">
-          <h2>Players List</h2>
-          <UserTable users={users} />
-        </div>
-      </div>
-    </div>
-  );
-};
+	// CRUD operations
+	const addUser = user => {
+		user.id = users.length + 1
+		setUsers([ ...users, user ])
+	}
 
-export default App;
+	const deleteUser = id => {
+		setEditing(false)
+
+		setUsers(users.filter(user => user.id !== id))
+	}
+
+	const updateUser = (id, updatedUser) => {
+		setEditing(false)
+
+		setUsers(users.map(user => (user.id === id ? updatedUser : user)))
+	}
+
+	const editRow = user => {
+		setEditing(true)
+
+		setCurrentUser({ id: user.id, name: user.name, username: user.username })
+	}
+
+	return (
+		<div className="container">
+			<h1>Player Roster</h1>
+			<div className="flex-row">
+				<div className="flex-large">
+					{editing ? (
+						<Fragment>
+							<h2>Edit Player</h2>
+							<EditUserForm
+								editing={editing}
+								setEditing={setEditing}
+								currentUser={currentUser}
+								updateUser={updateUser}
+							/>
+						</Fragment>
+					) : (
+						<Fragment>
+							<h2>Add Player</h2>
+							<AddUserForm addUser={addUser} />
+						</Fragment>
+					)}
+				</div>
+				<div className="flex-large">
+					<h2>View Players</h2>
+					<UserTable users={users} editRow={editRow} deleteUser={deleteUser} />
+				</div>
+			</div>
+		</div>
+	)
+}
+
+export default App
