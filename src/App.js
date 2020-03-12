@@ -6,12 +6,12 @@ import UserTable from "./tables/UserTable";
 const App = () => {
   // Data
   const usersData = [
-    { id: 1, name: "Tania", position: "small foward" },
-    { id: 2, name: "Craig", position: "center" },
-    { id: 3, name: "Ben", position: "point" }
+    { id: 1, name: "T-Shirt", price: "$105.00" },
+    { id: 2, name: "Belt", price: "$250.00" },
+    { id: 3, name: "Pants", price: "$1500.00" }
   ];
 
-  const initialFormState = { id: null, name: "", position: "" };
+  const initialFormState = { id: null, name: "", price: "" };
 
   // Setting state
   const [users, setUsers] = useState(usersData);
@@ -19,9 +19,15 @@ const App = () => {
   const [editing, setEditing] = useState(false);
 
   // CRUD operations
+
+  
+
+
   const addUser = user => {
     user.id = users.length + 1;
     setUsers([...users, user]);
+    //setUsers(users => [...users, user])
+    //setUsers(users => users.concat(user))
   };
 
   const deleteUser = id => {
@@ -39,17 +45,17 @@ const App = () => {
   const editRow = user => {
     setEditing(true);
 
-    setCurrentUser({ id: user.id, name: user.name, position: user.position });
+    setCurrentUser({ id: user.id, name: user.name, price: user.price });
   };
 
   return (
     <div className="container">
-      <h1>Player Roster</h1>
+      <h1>Catalog</h1>
       <div className="flex-row">
         <div className="flex-large">
           {editing ? (
             <Fragment>
-              <h2>Edit Player</h2>
+              <h2>Edit Item</h2>
               <EditUserForm
                 editing={editing}
                 setEditing={setEditing}
@@ -59,13 +65,13 @@ const App = () => {
             </Fragment>
           ) : (
             <Fragment>
-              <h2>Add Player</h2>
+              <h2>Add Item</h2>
               <AddUserForm addUser={addUser} />
             </Fragment>
           )}
         </div>
         <div className="flex-large">
-          <h2>View Players</h2>
+          <h2>View Items</h2>
           <UserTable users={users} editRow={editRow} deleteUser={deleteUser} />
         </div>
       </div>

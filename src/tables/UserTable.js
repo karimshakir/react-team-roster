@@ -5,7 +5,7 @@ const UserTable = props => (
     <thead>
       <tr>
         <th>Name</th>
-        <th>Position</th>
+        <th>price</th>
         <th>Actions</th>
       </tr>
     </thead>
@@ -14,7 +14,7 @@ const UserTable = props => (
         props.users.map(user => (
           <tr key={user.id}>
             <td>{user.name}</td>
-            <td>{user.position}</td>
+            <td>{user.price}</td>
             <td>
               <button
                 onClick={() => {

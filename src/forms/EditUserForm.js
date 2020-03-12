@@ -4,9 +4,9 @@ const EditUserForm = props => {
   const [user, setUser] = useState(props.currentUser);
 
   const handleInputChange = event => {
-    const { name, value } = event.target;
+    const { value } = event.target;
 
-    setUser({ ...user, [name]: value });
+    setUser({ ...user, value });
   };
 
   useEffect(() => {
@@ -23,14 +23,14 @@ const EditUserForm = props => {
       <label>Name</label>
       <input
         type="text"
-        name="name"
+        //name="danhey"
         value={user.name}
         onChange={handleInputChange}
       />
       <label>Position</label>
       <input
         type="text"
-        name="position"
+        //name="jetskis"
         value={user.position}
         onChange={handleInputChange}
       />
