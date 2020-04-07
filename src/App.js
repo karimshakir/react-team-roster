@@ -1,51 +1,66 @@
-import React, { useState, Fragment } from "react";
+import React, { useState, Fragment, useEffect } from "react";
 import AddUserForm from "./forms/AddUserForm";
 import EditUserForm from "./forms/EditUserForm";
 import UserTable from "./tables/UserTable";
 
 const App = () => {
   // Data
-  const usersData = [
-    { id: 1, name: "T-Shirt", price: "$105.00" },
-    { id: 2, name: "Belt", price: "$250.00" },
-    { id: 3, name: "Pants", price: "$1500.00" }
-  ];
-
-  const initialFormState = { id: null, name: "", price: "" };
+  const itemData = [{ id: 1, name: "Hard-Coded", price: "$$$.00" }];
+  const initialFormState = { id: null, name: " ", price: " " };
 
   // Setting state
-  const [users, setUsers] = useState(usersData);
-  const [currentUser, setCurrentUser] = useState(initialFormState);
+  const [items, setItems] = useState(itemData);
+  const [currentItem, setCurrentItem] = useState(initialFormState);
   const [editing, setEditing] = useState(false);
 
   // CRUD operations
 
-  
-
-
-  const addUser = user => {
-    user.id = users.length + 1;
-    setUsers([...users, user]);
-    //setUsers(users => [...users, user])
-    //setUsers(users => users.concat(user))
+  useEffect(() => {
+    fetch("http://localhost:8080/products")
+      .then(response => response.json())
+      .then(data => {
+        console.log("useEffect data: ", data);
+        setItems(data);
+      });
+  }, []);
+d
+  const addItem = item => {
+    console.log(item);
+    fetch(`http://localhost:8080/products`, {
+      method: "post",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(item)
+    })
+      .then(response => response.json())
+      .then(data => setItems([...items, data]));
+    //setItems(items => [...items, item])
+    //setItems(items => items.concat(item))
+  };
+  const updateItem = (id, updatedItem) => {
+    fetch(`http://localhost:8080/products/${id}`, {
+      method: "put",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(updatedItem)
+    })
+      .then(response => response.json())
+      .then(data => {
+        setEditing(false);
+        setItems(
+          items.map(item => (item.id === id ? updatedItem : item))
+        );
+      });
   };
 
-  const deleteUser = id => {
+  const deleteItem = id => {
     setEditing(false);
 
-    setUsers(users.filter(user => user.id !== id));
+    setItems(items.filter(item => item.id !== id));
   };
 
-  const updateUser = (id, updatedUser) => {
-    setEditing(false);
-
-    setUsers(users.map(user => (user.id === id ? updatedUser : user)));
-  };
-
-  const editRow = user => {
+  const editRow = item => {
     setEditing(true);
 
-    setCurrentUser({ id: user.id, name: user.name, price: user.price });
+    setCurrentItem({ id: item.id, name: item.name, price: item.price });
   };
 
   return (
@@ -59,20 +74,24 @@ const App = () => {
               <EditUserForm
                 editing={editing}
                 setEditing={setEditing}
-                currentUser={currentUser}
-                updateUser={updateUser}
+                currentItem={currentItem}
+                updateItem={updateItem}
               />
             </Fragment>
           ) : (
             <Fragment>
               <h2>Add Item</h2>
-              <AddUserForm addUser={addUser} />
+              <AddUserForm addItem={addItem} />
             </Fragment>
           )}
         </div>
         <div className="flex-large">
           <h2>View Items</h2>
-          <UserTable users={users} editRow={editRow} deleteUser={deleteUser} />
+          <UserTable
+            items={items}
+            editRow={editRow}
+            deleteItem={deleteItem}
+          />
         </div>
       </div>
     </div>

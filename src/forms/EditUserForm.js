@@ -1,41 +1,39 @@
 import React, { useState, useEffect } from "react";
 
 const EditUserForm = props => {
-  const [user, setUser] = useState(props.currentUser);
+  const [item, setItem] = useState(props.currentItem);
 
   const handleInputChange = event => {
-    const { value } = event.target;
+    const { name, value } = event.target;
 
-    setUser({ ...user, value });
-  };
+    setItem({ ...item, [name]:value });
+  }
 
-  useEffect(() => {
-    setUser(props.currentUser);
-  }, [props]);
   return (
     <form
       onSubmit={event => {
-        event.preventDefault();
+        event.preventDefault()
 
-        props.updateUser(user.id, user);
+        props.updateItem(item.id, item);
       }}
     >
-      <label>Name</label>
+      <label>Item</label>
       <input
         type="text"
-        //name="danhey"
-        value={user.name}
+        name="name"
+        value={item.name}
         onChange={handleInputChange}
       />
-      <label>Position</label>
+      <label>Price</label>
       <input
         type="text"
-        //name="jetskis"
-        value={user.position}
+        name="price"
+        value="item.price"
         onChange={handleInputChange}
       />
-      <button>Update user</button>
+      <button>Update item</button>
       <button
+        type="submit"
         onClick={() => props.setEditing(false)}
         className="button muted-button"
       >

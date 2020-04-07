@@ -10,22 +10,22 @@ const UserTable = props => (
       </tr>
     </thead>
     <tbody>
-      {props.users.length > 0 ? (
-        props.users.map(user => (
-          <tr key={user.id}>
-            <td>{user.name}</td>
-            <td>{user.price}</td>
+      {props.items.length > 0 ? (
+        props.items.map(item => (
+          <tr key={item.id}>
+            <td>{item.name}</td>
+            <td>{item.price}</td>
             <td>
               <button
                 onClick={() => {
-                  props.editRow(user);
+                  props.editRow(item);
                 }}
                 className="button muted-button"
               >
                 Edit
               </button>
               <button
-                onClick={() => props.deleteUser(user.id)}
+                onClick={() => props.deleteItem(item.id)}
                 className="button muted-button"
               >
                 Delete
@@ -35,7 +35,7 @@ const UserTable = props => (
         ))
       ) : (
         <tr>
-          <td colSpan={3}>No users</td>
+          <td colSpan={3}>No items</td>
         </tr>
       )}
     </tbody>

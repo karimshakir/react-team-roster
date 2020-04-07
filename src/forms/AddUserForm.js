@@ -2,39 +2,40 @@ import React, { useState } from "react";
 
 const AddUserForm = props => {
   const initialFormState = { id: null, name: "", price: "" };
-  const [user, setUser] = useState(initialFormState);
+  const [item, setItem] = useState(initialFormState);
 
   const handleInputChange = event => {
     const { name, value } = event.target;
 
-    setUser({ ...user, [name]: value });
+    setItem({ ...item, [name]: value });
   };
 
   return (
     <form
-      onSubmit={event => {
+      onSubmit={ event => {
         event.preventDefault();
-        if (!user.name || !user.price) return;
-
-        props.addUser(user);
-        setUser(initialFormState);
-      }}
+        console.log(item)
+        if (!item.name || !item.price) return;
+        props.addItem(item);
+        setItem(initialFormState);
+      }
+    }
     >
       <label>Name</label>
       <input
         type="text"
         name="name"
-        value={user.name}
+        value={item.name}
         onChange={handleInputChange}
       />
       <label>price</label>
       <input
         type="text"
-        name="prices"
-        value={user.prices}
+        name="price"
+        value={item.price}
         onChange={handleInputChange}
       />
-      <button>Add new user</button>
+      <button>Add new item</button>
     </form>
   );
 };
